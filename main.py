@@ -16,8 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-email_address="***********" 
-password = "**************" 
+email_address="++++++++++++++++" 
+password = "+++++++++++++" 
 class EmailSchma(BaseModel):
     to:str
     subject:str
@@ -56,17 +56,17 @@ def get_email():
 
     return emails
 
-def delete_email_func(email_ids):
+def delete_email(email_ids):
   mail=imaplib.IMAP4_SSL("imap.gmail.com")
   mail.login(email_address,password)
   mail.select("inbox")
   
 
   _, data=mail.search(None,"ALL")
-  emails_ids=data[0].split()[-5:]
+  eamils_ids=data[0].split()[-5:]
 
-  last_email=email_ids[-1]
-  mail.store(last_email, '+FLAGS', '\\Deleted')
+  lasemails=email_ids[-1]
+  mail.store(laseemails, '+FLAGS', '\\Deleted')
   mail.expunge()
 
 @app.get("/emails")
@@ -89,9 +89,9 @@ def send_email(emaill:EmailSchma):
         return {"message":"failed to send email"}
     
 @app.delete("/deleteemail")
-def delete_email_endpoint(email_ids: list[int]):
+def delete_email(email_ids: list[int]):
     try:
-        delete_email_func(email_ids)
+        delete_email(email_ids)
         return {"message": "Email deleted successfully"}
     except Exception as e:
         return {"message": "Failed to delete email"}
